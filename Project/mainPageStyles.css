@@ -1,0 +1,548 @@
+@font-face {
+  font-family: 'Inter';
+  src: url('./fonts/Inter-ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('./fonts/Inter-ExtraLight.woff2') format('woff2');
+  font-weight: 100;
+  font-style: italic;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('./fonts/Inter-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('./fonts/Inter-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Inter';
+  src: url('./fonts/Inter-SemiBold.woff2') format('woff2');
+  font-weight: 600;
+  font-style: normal;
+  font-display: swap;
+}
+
+/**
+  Нормализация блочной модели
+ */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/**
+   Убираем внутренние отступы слева тегам списков,
+   у которых есть атрибут class
+  */
+:where(ul, ol):where([class]) {
+  padding-left: 0;
+}
+
+/**
+   Убираем внешние отступы body и двум другим тегам,
+   у которых есть атрибут class
+  */
+body,
+:where(blockquote, figure):where([class]) {
+  margin: 0;
+}
+
+/**
+   Убираем внешние отступы вертикали нужным тегам,
+   у которых есть атрибут class
+  */
+:where(h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  ul,
+  ol,
+  dl):where([class]) {
+  margin-block: 0;
+}
+
+:where(dd[class]) {
+  margin-left: 0;
+}
+
+:where(fieldset[class]) {
+  margin-left: 0;
+  padding: 0;
+  border: none;
+}
+
+/**
+   Убираем стандартный маркер маркированному списку,
+   у которого есть атрибут class
+  */
+:where(ul[class]) {
+  list-style: none;
+}
+
+/**
+   Обнуляем вертикальные внешние отступы параграфа,
+   объявляем локальную переменную для внешнего отступа вниз,
+   чтобы избежать взаимодействие с более сложным селектором
+  */
+p {
+  --paragraphMarginBottom: 24px;
+
+  margin-block: 0;
+}
+
+/**
+   Внешний отступ вниз для параграфа без атрибута class,
+   который расположен не последним среди своих соседних элементов
+  */
+p:where(:not([class]):not(:last-child)) {
+  margin-bottom: var(--paragraphMarginBottom);
+}
+
+
+/**
+   Упрощаем работу с изображениями
+  */
+img {
+  display: block;
+  max-width: 100%;
+}
+
+/**
+   Наследуем свойства шрифт для полей ввода
+  */
+input,
+textarea,
+select,
+button {
+  font: inherit;
+}
+
+html {
+  /**
+     Пригодится в большинстве ситуаций
+     (когда, например, нужно будет "прижать" футер к низу сайта)
+    */
+  height: 100%;
+}
+
+/**
+   Плавный скролл
+  */
+html,
+:has(:target) {
+  scroll-behavior: smooth;
+}
+
+body {
+  /**
+     Пригодится в большинстве ситуаций
+     (когда, например, нужно будет "прижать" футер к низу сайта)
+    */
+  min-height: 100%;
+  /**
+     Унифицированный интерлиньяж
+    */
+  line-height: 1.5;
+}
+
+/**
+   Приводим к единому цвету svg-элементы
+  */
+svg *[fill] {
+  fill: currentColor
+}
+
+svg *[stroke] {
+  stroke: currentColor
+}
+
+/**
+   Чиним баг задержки смены цвета при взаимодействии с svg-элементами
+  */
+svg * {
+  transition-property: fill, stroke;
+}
+
+/**
+   Удаляем все анимации и переходы для людей,
+   которые предпочитают их не использовать
+  */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+
+/* code */
+
+:root {
+  --block-gray: #BDBDBD;
+  --footer-gray: #828282;
+  --accent-color: #0097A7;
+  --dark-color: #000000;
+  --light-color: #FFFFFF;
+
+  --font-family-base: 'Inter', sans-serif;
+
+  --transition-duration: 0.2s;
+
+  --container-width: 1728px;
+  --container-padding-x: 146px;
+
+  --header-height: 252px;
+}
+
+body {
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: 0.03cm;
+  color: var(--dark-color);
+  background-color: var(--light-color);
+}
+
+a,
+button,
+input,
+textarea,
+svg * {
+  transition-duration: var(--transition-duration);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+a {
+  text-decoration: none;
+  color: var(--dark-color);
+}
+
+a:hover {
+  color: var(--footer-gray);
+}
+
+
+/* header */
+.header-right-vertical-line {
+  border: 1px solid var(--block-gray);
+  width: 0px;
+  height: 65px;
+}
+
+.header-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  column-gap: 20px;
+  border-bottom: 1px var(--block-gray) solid;
+}
+
+.header-menu-list {
+  /* display: flex; */
+  column-gap: 20;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-menu-item {
+  display: inline-block;
+  margin: 25px 90px;
+}
+
+/* .header-menu-item li:first-child {
+  margin-right: 500px;
+} */
+
+.header {
+  border-bottom: 1px var(--footer-gray) solid;
+}
+
+.container {
+  max-width: calc(var(--container-width) + var(--container-padding-x) * 2);
+  margin-inline: auto;
+  padding-inline: var(--container-padding-x);
+}
+
+.container-wide {
+  max-width: 1920px;
+  margin-inline: auto;
+}
+
+.header-actions {
+  display: flex;
+  column-gap: 22px;
+  width: 315px;
+  height: 65px;
+}
+
+.header-menu-link {
+  text-decoration: none;
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: 0.03px;
+}
+
+.search {
+  display: flex;
+  column-gap: 12px;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.header-search-img {
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.subscribe {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+.header-logo {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+/* header */
+
+
+
+/* body */
+
+/* subscribe panel */
+.subscribe-panel {
+  display: flex;
+  margin-top: 43px;
+  margin-bottom: 43px;
+  border-bottom: 1px var(--footer-gray) solid;
+  border-top: 1px var(--footer-gray) solid;
+  padding-top: 13px;
+  padding-bottom: 13px;
+  align-items: center;
+  justify-content: center;
+}
+
+.subscribe-img {
+  margin-right: 28px;
+}
+
+.subscribe-test {
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 24px;
+  letter-spacing: 0.15em;
+}
+
+.button-subscribe {
+  background-color: var(--accent-color);
+  margin-left: 28px;
+  width: 123px;
+  height: 29px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.link-subscribe {
+  color: var(--light-color);
+  font-family: var(--font-family-base);
+  font-weight: 500;
+  font-size: 15px;
+  letter-spacing: 0.15em;
+}
+
+.link-subscribe:hover {
+  color: var(--dark-color);
+}
+
+.subscribe-panel-inner-info {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* subscribe panel */
+
+/* main info */
+
+.grid {
+  display: flex;
+  flex-wrap: wrap; /* Позволяет элементам переноситься на новую строку, если не хватает места */
+  margin-bottom: 52px;
+}
+
+.popular-stories {
+  flex: 2; /* Занимает две четверти от доступной ширины */
+  display: flex;
+  flex-direction: row; /* Отображает дочерние элементы в столбец */
+  justify-content: space-between; /* Равномерно распределяет пространство между дочерними элементами */
+}
+
+.small-popular-stories {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  
+}
+
+.first-popular-story {
+  flex: 2; /* Занимает две четверти от доступной высоты */
+  width: 417px;
+}
+
+.second-popular-story,
+.third-popular-story {
+  flex: 1; /* Занимают по одной четверти от доступной высоты */
+  width: 272px;
+}
+
+.second-popular-story {
+  margin-bottom: 9px;
+}
+
+.latest-stories-div {
+  flex: 1; /* Занимает одну четверть от доступной ширины */
+}
+
+.category {
+  font-family: var(--font-family-base);
+font-weight: 500;
+font-size: 18px;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+}
+
+.title {
+  font-family: var(--font-family-base);
+font-weight: 400;
+font-size: 13px;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+}
+
+.title-latest-stories {
+  font-family: var(--font-family-base);
+font-weight: 600;
+font-size: 24px;
+letter-spacing: 0.15em;
+text-transform: uppercase;
+/* margin-bottom: 43px; */
+}
+
+.latest-story {
+  width: 396px;
+  height: 107px;
+  display: flex;
+  margin-top: 43px;
+}
+
+.naming {
+  display: flex;
+  flex-direction: column;
+}
+
+#body {
+  width: 1270px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+
+/* main info */
+
+
+/* body */
+
+/* footer */
+
+.footer {
+  background-color: var(--footer-gray);
+  color: var(--light-color);
+  height: 243px;
+}
+
+.link-contack-us {
+  color: var(--light-color);
+}
+
+.link-contack-us:hover {
+  color: var(--dark-color);
+}
+
+.container-footer {
+  width: 1183px;
+  margin-left: 155px;
+  padding-top: 34px;
+}
+
+.name-space {
+  float: left;
+}
+
+.more-menu {
+  float: left;
+  margin-left: 410px;
+  /* расстояние между name-space и more-menu */
+}
+
+.categories-menu {
+  float: right;
+  /* margin-left: 173px; */
+  /* расстояние между more-menu и categories-menu */
+}
+
+.more-about-us-item,
+.categories-item {
+  font-family: var(--font-family-base);
+  font-weight: 400;
+  font-size: 20px;
+  letter-spacing: 0.15em;
+}
+
+.list-title {
+  font-family: var(--font-family-base);
+  font-weight: 600;
+  font-size: 24px;
+  letter-spacing: 0.15em;
+}
+
+/* footer */
